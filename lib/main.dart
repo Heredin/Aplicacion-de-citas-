@@ -1,3 +1,4 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -18,30 +19,43 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({Key key}) : super(key: key);
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  var _emailForm=GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Dr Simmy'),),
-      body: Column(
-       
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+      body: Form(
+        key: _emailForm,
+              child: Center(
+                child: Column(
+         
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
 
- Center(
-   child: SizedBox(
+  SizedBox(
      width: 300,
      child: TextFormField(
-       decoration: InputDecoration(labelText: 'Email'),
+       validator: (value)=>value.isEmpty?"Correo requerido":EmailValidator.validate(value)?null:"Correo Inavalido",
+         decoration: InputDecoration(labelText: 'Email'),
      )),
- ),
  Padding(
    padding: const EdgeInsets.all(8.0),
-   child: TextButton(onPressed: ()=>{}, child: Text('Entrar')),
+   child: TextButton(onPressed: ()=>{
+     if(_emailForm.currentState.validate()){
+print('Acceso concedido!')
+     }
+   }, child: Text('Entrar')),
  )
-        ]
+          ]
+        ),
+              ),
       ),
     );
   }
